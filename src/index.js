@@ -79,7 +79,7 @@ server.post("/library", async (req, res) => {
     });
 });
 
-server.post("/book/:id", async (req, res) => {
+server.put("/book/:id", async (req, res) => {
     const bookId = req.params.id;
     const { title, image, synopsis, year, author_name, author_country, author_photo, author_bio } = req.body;
 
@@ -175,3 +175,5 @@ server.delete("/book/:id", async (req, res) => {
 });
 
 
+const pathServerPublicReact = './src/public-react';
+server.use(express.static(pathServerPublicReact));
