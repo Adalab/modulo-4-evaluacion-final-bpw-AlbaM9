@@ -2,16 +2,21 @@
 
 Esta es una API RESTful para gestionar libros de fantasía y sus autores.
 
-## Endpoints
+Por supuesto, aquí tienes el contenido llenado con los detalles de tu API:
 
+### Documentación de la API
+
+#### Descripción
+Esta API proporciona funcionalidades para gestionar libros de fantasía y sus autores. Permite realizar operaciones como obtener información de los libros, agregar nuevos libros, actualizar la información de los libros existentes y eliminar libros de la base de datos.
+
+#### Endpoints
 - `GET /library`: Obtiene todos los libros de fantasía y su información de autor.
 - `POST /library`: Añade un nuevo libro de fantasía junto con la información de su autor.
 - `POST /book/:id`: Actualiza ciertos campos de un libro existente y/o de su autor.
 - `DELETE /book/:id`: Elimina un libro de fantasía y su autor si no tiene otros libros asociados.
 
-## Parámetros de solicitud
-
-### POST /library y POST /book/:id
+#### Parámetros de solicitud
+Para los endpoints `POST /library` y `POST /book/:id`, se deben proporcionar los siguientes parámetros en el cuerpo de la solicitud:
 
 ```json
 {
@@ -24,6 +29,7 @@ Esta es una API RESTful para gestionar libros de fantasía y sus autores.
   "author_photo": "https://example.com/author_photo.jpg",
   "author_bio": "Biografía del autor..."
 }
+```
 
 
 
@@ -35,19 +41,36 @@ Esta es una API RESTful para gestionar libros de fantasía y sus autores.
 - `404 Not Found`: El recurso solicitado no se encontró.
 - `500 Internal Server Error`: Error interno del servidor.
 
-## Configuración del servidor
+### Instrucciones del Proyecto
 
-Este servidor utiliza Express.js para el enrutamiento y MySQL para la base de datos. Asegúrate de configurar las variables de entorno en un archivo `.env` con los siguientes valores, usando tus propio puerto:
-
-\`PORT=3000
-URL=http://localhost:3000\`
-
-
-
-## Instrucciones de instalación
+#### Configuración del Entorno
+Para configurar el entorno de desarrollo, sigue estos pasos:
 
 1. Clona este repositorio en tu máquina local.
 2. Ejecuta `npm install` para instalar las dependencias.
 3. Crea una base de datos MySQL llamada `fantasybooks` y ejecuta el script de creación de tablas proporcionado.
-4. Crea un archivo `.env` con las variables de entorno mencionadas anteriormente.
-5. Ejecuta `npm start` para iniciar el servidor.
+4. Crea un archivo `.env` con las siguientes variables de entorno:
+
+```dotenv
+PORT=tu_puerto
+URL=http://localhost:tu_puerto
+HOST: "host_DB",
+USER: "tu_user",
+PASSWORD: "tu_password",
+DATABASE: "fantasybooks",
+```
+
+#### Instalación
+Sigue estos pasos para instalar y ejecutar el servidor:
+
+1. Ejecuta `npm start` para iniciar el servidor.
+2. Ejecuta una terminal en cd web para arrancar la página de React
+3. Asegurate de modificar los fetch de frontEnd con tu ruta de servidor
+
+
+#### Uso
+Una vez que el servidor esté en funcionamiento, puedes utilizar la API para gestionar la biblioteca de libros de fantasía.
+
+
+#### Licencia
+Este proyecto está bajo la licencia MIT.
