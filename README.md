@@ -25,7 +25,7 @@ Esta es una API RESTful para gestionar libros de fantasía y sus autores.
   "author_bio": "Biografía del autor..."
 }
 
-
+```
 
 ## Respuestas
 
@@ -38,11 +38,11 @@ Esta es una API RESTful para gestionar libros de fantasía y sus autores.
 ## Configuración del servidor
 
 Este servidor utiliza Express.js para el enrutamiento y MySQL para la base de datos. Asegúrate de configurar las variables de entorno en un archivo `.env` con los siguientes valores, usando tus propio puerto:
+```json
+PORT=3000
+URL=http://localhost:3000
 
-\`PORT=3000
-URL=http://localhost:3000\`
-
-
+```
 
 ## Instrucciones de instalación
 
