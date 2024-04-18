@@ -48,7 +48,7 @@ URL= complete server URL
 ## Instrucciones de instalación
 
 1. Clona este repositorio en tu máquina local.
-2. Ejecuta `npm install` para instalar las dependencias.
+2. Ejecuta `npm install` para instalar las dependencias; 
 3. Crea una base de datos MySQL llamada `fantasybooks` y ejecuta el script de creación de tablas proporcionado.
 4. Crea un archivo `.env` con las variables de entorno mencionadas anteriormente.
 5. Ejecuta `npm start` para iniciar el servidor.
