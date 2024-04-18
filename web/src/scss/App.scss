@@ -1,0 +1,91 @@
+@import 'core/Reset';
+
+h2 {
+    margin-left: 30px;
+    color: white;
+}
+
+.libraryCard {
+    list-style: none;
+    margin-bottom: 20px;
+
+    width: 80%;
+    min-width: 500px;
+
+    .libraryCard_bookData {
+        position: relative;
+        display: flex;
+        // background-color: #e6bfbf;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        // position: relative;
+
+        img {
+            width: 30%;
+            height: auto;
+
+            border-radius: 20px;
+
+
+        }
+
+        >div {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            p {
+                margin: 5px 0;
+                font-size: 18px;
+                color: #333;
+                //font-weight: bold;
+                //text-transform: uppercase;
+            }
+        }
+    }
+
+    .libraryCard_authorData {
+        //position: absolute;
+        margin-top: 40px;
+        background-color: green;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        align-items: center;
+        text-align: center;
+        margin-right: 50px;
+        min-width: 100px;
+        max-width: 300px;
+        //max-height: 300px;
+
+
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        >div {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            p {
+                margin: 5px 0;
+                font-size: 16px;
+                color: black;
+                font-weight: bold;
+            }
+        }
+
+        .bio {
+            font-size: 12px;
+            font-weight: 100;
+        }
+    }
+}
