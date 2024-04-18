@@ -17,7 +17,7 @@ async function getDBConnection() {
         host: "localhost",
         user: "root",
         password: "AlbaM9",
-        database: "fantasylibrary",
+        database: "fantasybooks",
     });
 
     //Nos conectamos 
@@ -31,7 +31,7 @@ server.listen(serverPort, () => {
     console.log(`Server listening at ${process.env.URL}`);
 });
 
-//Leer / listar todas las entradas existentes. GET
+//Leer / listar todas las entradas existentes. GET LISTO
 //Insertar una entrada en su entidad principal(crear / añadir un nuevo elemento). POST
 //Actualizar una entrada existente. POST
 //Eliminar una entrada existente POST
@@ -41,7 +41,7 @@ server.get("/library", async (req, res) => {
 
     try {
         const connection = await getDBConnection();
-        const sql = "SELECT * FROM libros, autores WHERE libros.autor_id = autores.autor_id";
+        const sql = "SELECT * FROM books, authors WHERE books.fk_author_id = authors.author_id";
         const [libraryResult] = await connection.query(sql);
         console.log(libraryResult);
         connection.end();
@@ -60,12 +60,12 @@ server.get("/library", async (req, res) => {
 
 });
 
-server.post("/projects", async (req, res) => {
+server.post("/library", async (req, res) => {
     const connection = await getDBConnection();
     const authorQuerySql = "INSERT INTO author (authorName, jobName, authorImage) VALUES (?, ?, ?)";
     const [authorResult] = await connection.query(authorQuerySql, [req.body.autor, req.body.job, req.body.photo]);
     const projectQuerySql = "INSERT INTO projectData (projectName, slogan, repo, demo, techs, description, projectImage, fk_idAuthor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    const [projectResult] = await connection.query(projectQuerySql, [
+    const [bookResult] = await connection.query(projectQuerySql, [
         req.body.name,
         req.body.slogan,
         req.body.repo,
@@ -78,8 +78,7 @@ server.post("/projects", async (req, res) => {
 
     res.status(201).json({
         success: true,
-        id: projectResult.insertId,
-        cardURL: `${process.env.URL}/detail/${projectResult.insertId}`,
+        id: bookResult.insertId,
 
     });
 

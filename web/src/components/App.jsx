@@ -31,29 +31,33 @@ function App() {
     <div >
       <header>
         <h2>Librería</h2>
+        <button>Añade tus libros favoritos!</button>
 
       </header>
 
       <ul>
         {libraryData.map((item) => (
-          <li key={item.id} className='libraryCard'>
+          <li key={item.book_id} className='libraryCard'>
 
-            <div className='libraryCard_bookData' style={{ backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8)), url(${item.libro_img})` }}>
-              <img src={item.libro_img} alt={item.titulo} />
+            <div className='libraryCard_bookData' style={{
+              backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6)), url(${item.book_image})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: "cover",
+              backgroundPosition: "top"
+            }}>
+              <img src={item.book_image} alt={item.book_title} />
               <div >
-                <h3>{item.titulo}</h3>
-                <p>Género: {item.genero}</p>
-                <p>Editorial: {item.editorial}</p>
-                <p>Año: {item.año_publicacion}</p>
-                <p>Sinopsis: {item.sinopsis}</p>
+                <h3>{item.book_title}</h3>
+                <p>Año: {item.book_year}</p>
+                <p>Sinopsis: {item.book_synopsis}</p>
               </div>
 
-              <div className='libraryCard_authorData' style={{ backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8)), url(${item.autor_foto})` }}>
-                <img src={item.autor_foto} alt={item.nombre} />
+              <div className='libraryCard_authorData' style={{ backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8)), url(${item.author_photo})` }}>
+                <img src={item.author_photo} alt={item.author_name} />
                 <div>
-                  <p>{item.nombre}</p>
-                  <p>{item.nacionalidad}</p>
-                  <p className='bio'>{item.biografia}</p>
+                  <p>{item.author_name}</p>
+                  <p>{item.author_country}</p>
+                  <p className='bio'>{item.author_bio}</p>
                 </div>
               </div>
             </div>
