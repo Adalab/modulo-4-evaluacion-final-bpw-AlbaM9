@@ -27,7 +27,7 @@ Esta es una API RESTful para gestionar libros de fantasía y sus autores.
 
 
 
-## Respuestas
+### Respuestas
 
 - `200 OK`: La solicitud se completó correctamente.
 - `201 Created`: Se creó un nuevo recurso.
