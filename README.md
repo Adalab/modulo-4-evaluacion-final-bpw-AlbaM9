@@ -54,10 +54,7 @@ Para configurar el entorno de desarrollo, sigue estos pasos:
 ```dotenv
 PORT=tu_puerto
 URL=http://localhost:tu_puerto
-HOST: "host_DB",
-USER: "tu_user",
-PASSWORD: "tu_password",
-DATABASE: "fantasybooks",
+
 ```
 
 #### Instalación
