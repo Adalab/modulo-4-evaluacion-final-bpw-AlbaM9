@@ -53,22 +53,23 @@ Para configurar el entorno de desarrollo, sigue estos pasos:
 ```dotenv
 PORT=tu_puerto
 URL=http://localhost:tu_puerto
+HOST: "host_DB",
+USER: "tu_user",
+PASSWORD: "tu_password",
+DATABASE: "fantasybooks",
 ```
 
 #### Instalación
 Sigue estos pasos para instalar y ejecutar el servidor:
 
 1. Ejecuta `npm start` para iniciar el servidor.
+2. Ejecuta una terminal en cd web para arrancar la página de React
+3. Asegurate de modificar los fetch de frontEnd con tu ruta de servidor
+
 
 #### Uso
 Una vez que el servidor esté en funcionamiento, puedes utilizar la API para gestionar la biblioteca de libros de fantasía.
 
-#### Contribución
-Si deseas contribuir al proyecto, sigue estas pautas:
-
-- Haz un fork del repositorio.
-- Crea una nueva rama para tu función o corrección de errores.
-- Realiza tus cambios y crea una solicitud de extracción (pull request) describiendo tus cambios.
 
 #### Licencia
 Este proyecto está bajo la licencia MIT.
