@@ -32,8 +32,8 @@ server.listen(serverPort, () => {
 });
 
 //Leer / listar todas las entradas existentes. GET LISTO
-//Insertar una entrada en su entidad principal(crear / añadir un nuevo elemento). POST
-//Actualizar una entrada existente. POST
+//Insertar una entrada en su entidad principal(crear / añadir un nuevo elemento). POST LISTO
+//Actualizar una entrada existente. POST LISTO
 //Eliminar una entrada existente POST
 
 
@@ -66,10 +66,10 @@ server.post("/library", async (req, res) => {
     // Insertar datos del autor
     const authorQuerySql = "INSERT INTO authors (author_name, author_country, author_photo, author_bio) VALUES (?, ?, ?, ?)";
     const [authorResult] = await connection.query(authorQuerySql, [
-        req.body.author_name, // Cambiar de req.body.name a req.body.author_name
-        req.body.author_country, // Cambiar de req.body.country a req.body.author_country
-        req.body.author_photo, // Cambiar de req.body.photo a req.body.author_photo
-        req.body.author_bio // Cambiar de req.body.bio a req.body.author_bio
+        req.body.author_name,
+        req.body.author_country,
+        req.body.author_photo,
+        req.body.author_bio
     ]);
 
     // Insertar datos del libro con el ID del autor relacionado
@@ -89,7 +89,100 @@ server.post("/library", async (req, res) => {
 });
 
 
+server.post("/book/:id", async (req, res) => {
+    const bookId = req.params.id;
+    const { title, image, synopsis, year, author_name, author_country, author_photo, author_bio } = req.body;
 
+    try {
+        const connection = await getDBConnection();
+        let updateFieldsBook = [];
+        let updateFieldsAuthor = [];
+        let valuesBook = [];
+        let valuesAuthor = [];
+
+        if (title) {
+            updateFieldsBook.push("book_title = ?");
+            valuesBook.push(title);
+        }
+        if (image) {
+            updateFieldsBook.push("book_image = ?");
+            valuesBook.push(image);
+        }
+        if (synopsis) {
+            updateFieldsBook.push("book_synopsis = ?");
+            valuesBook.push(synopsis);
+        }
+        if (year) {
+            updateFieldsBook.push("book_year = ?");
+            valuesBook.push(year);
+        }
+
+        if (author_name) {
+            updateFieldsAuthor.push("author_name = ?");
+            valuesAuthor.push(author_name);
+        }
+        if (author_country) {
+            updateFieldsAuthor.push("author_country = ?");
+            valuesAuthor.push(author_country);
+        }
+        if (author_photo) {
+            updateFieldsAuthor.push("author_photo = ?");
+            valuesAuthor.push(author_photo);
+        }
+        if (author_bio) {
+            updateFieldsAuthor.push("author_bio = ?");
+            valuesAuthor.push(author_bio);
+        }
+
+        if (updateFieldsBook.length === 0 && updateFieldsAuthor.length === 0) {
+            return res.status(400).json({ error: "No se proporcionaron campos para actualizar." });
+        }
+
+        if (updateFieldsBook.length > 0) {
+            const updateBookQuery = `UPDATE books SET ${updateFieldsBook.join(", ")} WHERE book_id = ?`;
+            valuesBook.push(bookId);
+            await connection.query(updateBookQuery, valuesBook);
+        }
+
+        if (updateFieldsAuthor.length > 0) {
+            const updateAuthorQuery = `UPDATE authors SET ${updateFieldsAuthor.join(", ")} WHERE author_id = (SELECT fk_author_id FROM books WHERE book_id = ?)`;
+            valuesAuthor.push(bookId);
+            await connection.query(updateAuthorQuery, valuesAuthor);
+        }
+
+        // Solo envía una respuesta al final de la función
+        res.status(200).json({ success: true, message: "Los campos del libro y del autor fueron actualizados exitosamente." });
+    } catch (error) {
+        console.error("Error al actualizar los campos del libro y del autor:", error);
+        res.status(500).json({ error: "Error interno del servidor al actualizar los campos del libro y del autor." });
+    }
+});
+
+server.delete("/book/:id", async (req, res) => {
+    const bookId = req.params.id;
+
+    try {
+        const connection = await getDBConnection();
+
+        // Eliminar el libro
+        const deleteBookQuery = "DELETE FROM books WHERE book_id = ?";
+        const [bookResult] = await connection.query(deleteBookQuery, [bookId]);
+
+        // Verificar si se eliminó alguna fila
+        if (bookResult.affectedRows === 0) {
+            return res.status(404).json({ error: "No se encontró ningún libro con el ID proporcionado." });
+        }
+
+        // Eliminar el autor si no tiene otros libros asociados
+        const deleteAuthorQuery = "DELETE FROM authors WHERE author_id NOT IN (SELECT fk_author_id FROM books)";
+        await connection.query(deleteAuthorQuery);
+
+        res.status(200).json({ success: true, message: "La entrada del libro fue eliminada exitosamente." });
+    } catch (error) {
+        console.error("Error al eliminar la entrada del libro:", error);
+        res.status(500).json({ error: "Error interno del servidor al eliminar la entrada del libro." });
+    }
+});
 
 const pathServerPublicReact = './src/public-react';
 server.use(express.static(pathServerPublicReact));
