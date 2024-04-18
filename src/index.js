@@ -62,49 +62,32 @@ server.get("/library", async (req, res) => {
 
 server.post("/library", async (req, res) => {
     const connection = await getDBConnection();
-    const authorQuerySql = "INSERT INTO author (authorName, jobName, authorImage) VALUES (?, ?, ?)";
-    const [authorResult] = await connection.query(authorQuerySql, [req.body.autor, req.body.job, req.body.photo]);
-    const projectQuerySql = "INSERT INTO projectData (projectName, slogan, repo, demo, techs, description, projectImage, fk_idAuthor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    // Insertar datos del autor
+    const authorQuerySql = "INSERT INTO authors (author_name, author_country, author_photo, author_bio) VALUES (?, ?, ?, ?)";
+    const [authorResult] = await connection.query(authorQuerySql, [
+        req.body.author_name, // Cambiar de req.body.name a req.body.author_name
+        req.body.author_country, // Cambiar de req.body.country a req.body.author_country
+        req.body.author_photo, // Cambiar de req.body.photo a req.body.author_photo
+        req.body.author_bio // Cambiar de req.body.bio a req.body.author_bio
+    ]);
+
+    // Insertar datos del libro con el ID del autor relacionado
+    const projectQuerySql = "INSERT INTO books (book_title, book_image, book_synopsis, book_year, fk_author_id) VALUES (?, ?, ?, ?, ?)";
     const [bookResult] = await connection.query(projectQuerySql, [
-        req.body.name,
-        req.body.slogan,
-        req.body.repo,
-        req.body.demo,
-        req.body.technologies,
-        req.body.desc,
-        req.body.image,
+        req.body.book_title,
+        req.body.book_image,
+        req.body.book_synopsis,
+        req.body.book_year,
         authorResult.insertId
     ]);
 
     res.status(201).json({
         success: true,
         id: bookResult.insertId,
-
     });
-
-
 });
 
-//endpoint para que nos traiga de back la pagina web de detail.ejs que hemos creado en back
-server.get("/detail/:idProject", async (req, res) => {
-    try {
-        const { idProject } = req.params;
-        const connection = await getDBConnection(); // Espera a que la conexión se establezca
-
-        const sqlQuery = "SELECT * FROM projectData, author WHERE projectData.fk_idAuthor = idAuthor AND projectData.idProject = ?";
-        const [result] = await connection.query(sqlQuery, [idProject]);
-
-        if (result.length === 0) {
-            res.status(404).send("Proyecto no encontrado");
-        } else {
-            // Renderizar la plantilla con el objeto completo
-            res.render("detail", { project: result[0] });
-        }
-    } catch (error) {
-        console.error("Error al obtener detalles del proyecto:", error);
-        res.status(500).send("Error interno del servidor");
-    }
-});
 
 
 

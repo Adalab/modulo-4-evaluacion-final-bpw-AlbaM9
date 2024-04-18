@@ -27,7 +27,7 @@ INSERT INTO books (book_title, book_image, book_synopsis, book_year, fk_author_i
 
  
 Ahora va a revelar la verdad sobre sí mismo. Y para ello debe empezar por el principio: su infancia en una troupe de artistas itinerantes, los años malviviendo como un ladronzuelo en las calles de una gran ciudad y su llegada a una universidad donde esperaba encontrar todas las respuestas que había estado buscando.', 2007, 1),
-('Cazadores de Sombras: Ciudad de Hueso', 'https://static.wikia.nocookie.net/shadowhunters/images/2/21/CDS1_portada_ES_01.jpg/revision/latest?cb=20130103192518&path-prefix=es', 'En el Pandemónium, la discoteca de moda de Nuva York, Clary sigue a un atractivo chico de pelo azul hasta que presencia su muerte a manos de tres jóvenes cubiertos de extraños tatuajes.
+('Cazadores de Sombras: Ciudad de Hueso', 'https://imagessl1.casadellibro.com/a/l/s7/01/9788408083801.webp', 'En el Pandemónium, la discoteca de moda de Nuva York, Clary sigue a un atractivo chico de pelo azul hasta que presencia su muerte a manos de tres jóvenes cubiertos de extraños tatuajes.
 
 Desde esa noche, su destino se une al de esos tres cazadores de sombras, guerreros dedicados a liberar a la Tierra de demonios, y sobre todo, al de Jace, un chico con aspecto de ángel y tendencia a actuar como un idiota...', 2007, 2);
 
