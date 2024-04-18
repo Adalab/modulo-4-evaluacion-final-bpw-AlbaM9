@@ -31,12 +31,6 @@ server.listen(serverPort, () => {
     console.log(`Server listening at ${process.env.URL}`);
 });
 
-//Leer / listar todas las entradas existentes. GET LISTO
-//Insertar una entrada en su entidad principal(crear / añadir un nuevo elemento). POST LISTO
-//Actualizar una entrada existente. POST LISTO
-//Eliminar una entrada existente POST
-
-
 server.get("/library", async (req, res) => {
 
     try {
