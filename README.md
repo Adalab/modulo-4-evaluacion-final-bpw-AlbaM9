@@ -37,10 +37,11 @@ Esta es una API RESTful para gestionar libros de fantasía y sus autores.
 
 ## Configuración del servidor
 
-Este servidor utiliza Express.js para el enrutamiento y MySQL para la base de datos. Asegúrate de configurar las variables de entorno en un archivo `.env` con los siguientes valores, usando tus propio puerto:
+Este servidor utiliza Express.js para el enrutamiento y MySQL para la base de datos. Asegúrate de configurar las variables de entorno en un archivo `.env` con los siguientes valores, usando tus propio puerto. Asegurate de 
+cambiarlo en la aplicaión web si vas a usarla:
 ```json
-PORT=3000
-URL=http://localhost:3000
+PORT= Only Port
+URL= complete server URL
 
 ```
 
