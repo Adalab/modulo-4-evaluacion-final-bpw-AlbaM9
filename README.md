@@ -61,8 +61,7 @@ URL=http://localhost:tu_puerto
 Sigue estos pasos para instalar y ejecutar el servidor:
 
 1. Ejecuta `npm start` para iniciar el servidor.
-2. Ejecuta una terminal en cd web para arrancar la página de React
-3. Asegurate de modificar los fetch de frontEnd con tu ruta de servidor
+2. Asegurate de modificar los fetch de frontEnd con tu ruta de servidor
 
 
 #### Uso
