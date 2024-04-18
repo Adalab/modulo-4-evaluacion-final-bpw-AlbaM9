@@ -7,11 +7,9 @@ require("dotenv").config();
 const server = express();
 server.use(cors());
 
-
-// Podemos poner un límite 
 server.use(express.json({ limit: "25mb" }));
 
-// Conectarse con la base de datos 
+
 async function getDBConnection() {
     const connection = await mysql.createConnection({
         host: "localhost",
@@ -20,13 +18,12 @@ async function getDBConnection() {
         database: "fantasybooks",
     });
 
-    //Nos conectamos 
+
     connection.connect();
     return connection;
 }
 
 const serverPort = process.env.PORT
-//const serverPort = 4000;
 server.listen(serverPort, () => {
     console.log(`Server listening at ${process.env.URL}`);
 });
@@ -81,7 +78,6 @@ server.post("/library", async (req, res) => {
         id: bookResult.insertId,
     });
 });
-
 
 server.post("/book/:id", async (req, res) => {
     const bookId = req.params.id;
@@ -178,12 +174,4 @@ server.delete("/book/:id", async (req, res) => {
     }
 });
 
-const pathServerPublicReact = './src/public-react';
-server.use(express.static(pathServerPublicReact));
-
-const pathServerPublicStyles = './src/public-css';
-server.use(express.static(pathServerPublicStyles));
-
-const pathServerPublicImages = './public';
-server.use(express.static(pathServerPublicImages));
 

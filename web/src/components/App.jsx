@@ -40,7 +40,7 @@ function App() {
           <li key={item.book_id} className='libraryCard'>
 
             <div className='libraryCard_bookData' style={{
-              backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6)), url(${item.book_image})`,
+              backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6))`,
               backgroundRepeat: 'no-repeat',
               backgroundSize: "cover",
               backgroundPosition: "top"
