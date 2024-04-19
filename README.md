@@ -42,4 +42,6 @@ Recuerda que para realizar CRUD en la base de datos tienes que usar POSTMAN o tu
 Este proyecto está bajo la licencia MIT.
 
 ### Puedes consultar la documentacion de la API en 
-http:localhost:yourPort/api-docs
+```javascript
+http://localhost:yourPort/api-docs
+```
