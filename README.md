@@ -14,8 +14,8 @@ Para configurar el entorno de desarrollo, sigue estos pasos:
 4. Crea un archivo `.env` con las siguientes variables de entorno, tammbién las tienes en .env_example:
 
 ```dotenv
-PORT = write your own port. 4001
-URL =write your own URL
+PORT = write your own port/ 4001 for dev
+URL =write your own URL/https://localhost:4001 for dev
 
 //database variables;
 
