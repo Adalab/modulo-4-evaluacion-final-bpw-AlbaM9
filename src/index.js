@@ -2,12 +2,18 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2/promise");
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swaggerConfig');
+
 require("dotenv").config();
 
 const server = express();
 server.use(cors());
 
 server.use(express.json({ limit: "25mb" }));
+
+
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 async function getDBConnection() {
@@ -26,6 +32,19 @@ server.listen(serverPort, () => {
     console.log(`Server listening at ${process.env.URL}`);
 });
 
+
+/**
+ * @swagger
+ * /library:
+ *   get:
+ *     summary: Obtiene la biblioteca de libros de fantasía junto con la información de sus autores.
+ *     description: Retorna una lista de libros de fantasía con la información de sus autores.
+ *     responses:
+ *       '200':
+ *         description: Lista de libros de fantasía con información de sus autores.
+ *       '500':
+ *         description: Error interno del servidor al obtener la biblioteca de libros.
+ */
 server.get("/library", async (req, res) => {
 
     try {
@@ -48,11 +67,53 @@ server.get("/library", async (req, res) => {
     }
 
 });
-
+/**
+ * @swagger
+ * /library:
+ *   post:
+ *     summary: Añade un nuevo libro de fantasía junto con la información de su autor.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               book_title:
+ *                 type: string
+ *                 description: El título del libro.
+ *               book_image:
+ *                 type: string
+ *                 description: La URL de la imagen del libro.
+ *               book_synopsis:
+ *                 type: string
+ *                 description: La sinopsis del libro.
+ *               book_year:
+ *                 type: integer
+ *                 description: El año de publicación del libro.
+ *               author_name:
+ *                 type: string
+ *                 description: El nombre del autor del libro.
+ *               author_country:
+ *                 type: string
+ *                 description: El país del autor del libro.
+ *               author_photo:
+ *                 type: string
+ *                 description: La URL de la foto del autor del libro.
+ *               author_bio:
+ *                 type: string
+ *                 description: La biografía del autor del libro.
+ *     responses:
+ *       '201':
+ *         description: Petición exitosa. Se creó un nuevo libro de fantasía junto con la información de su autor.
+ *       '400':
+ *         description: La solicitud fue incorrecta o no válida.
+ *       '500':
+ *         description: Error interno del servidor al procesar la solicitud.
+ */
 server.post("/library", async (req, res) => {
     const connection = await getDBConnection();
 
-    // Insertar datos del autor
     const authorQuerySql = "INSERT INTO authors (author_name, author_country, author_photo, author_bio) VALUES (?, ?, ?, ?)";
     const [authorResult] = await connection.query(authorQuerySql, [
         req.body.author_name,
@@ -61,7 +122,6 @@ server.post("/library", async (req, res) => {
         req.body.author_bio
     ]);
 
-    // Insertar datos del libro con el ID del autor relacionado
     const projectQuerySql = "INSERT INTO books (book_title, book_image, book_synopsis, book_year, fk_author_id) VALUES (?, ?, ?, ?, ?)";
     const [bookResult] = await connection.query(projectQuerySql, [
         req.body.book_title,
@@ -76,7 +136,58 @@ server.post("/library", async (req, res) => {
         id: bookResult.insertId,
     });
 });
-
+/**
+ * @swagger
+ * /book/{id}:
+ *   put:
+ *     summary: Actualiza la información de un libro y su autor.
+ *     description: Actualiza la información de un libro y su autor identificado por su ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del libro a actualizar.
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: El título del libro.
+ *               image:
+ *                 type: string
+ *                 description: La URL de la imagen del libro.
+ *               synopsis:
+ *                 type: string
+ *                 description: La sinopsis del libro.
+ *               year:
+ *                 type: integer
+ *                 description: El año de publicación del libro.
+ *               author_name:
+ *                 type: string
+ *                 description: El nombre del autor del libro.
+ *               author_country:
+ *                 type: string
+ *                 description: El país del autor del libro.
+ *               author_photo:
+ *                 type: string
+ *                 description: La URL de la foto del autor del libro.
+ *               author_bio:
+ *                 type: string
+ *                 description: La biografía del autor del libro.
+ *     responses:
+ *       '200':
+ *         description: Los campos del libro y del autor fueron actualizados exitosamente.
+ *       '400':
+ *         description: No se proporcionaron campos para actualizar o la solicitud fue incorrecta.
+ *       '500':
+ *         description: Error interno del servidor al actualizar los campos del libro y del autor.
+ */
 server.put("/book/:id", async (req, res) => {
     const bookId = req.params.id;
     const { title, image, synopsis, year, author_name, author_country, author_photo, author_bio } = req.body;
@@ -138,34 +249,51 @@ server.put("/book/:id", async (req, res) => {
             await connection.query(updateAuthorQuery, valuesAuthor);
         }
 
-        // Solo envía una respuesta al final de la función
         res.status(200).json({ success: true, message: "Los campos del libro y del autor fueron actualizados exitosamente." });
     } catch (error) {
         console.error("Error al actualizar los campos del libro y del autor:", error);
         res.status(500).json({ error: "Error interno del servidor al actualizar los campos del libro y del autor." });
     }
 });
-
+/**
+ * @swagger
+ * /book/{id}:
+ *   delete:
+ *     summary: Elimina un libro y su autor.
+ *     description: Elimina un libro y su autor identificado por su ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del libro a eliminar.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: La entrada del libro fue eliminada exitosamente.
+ *       '404':
+ *         description: No se encontró ningún libro con el ID proporcionado.
+ *       '500':
+ *         description: Error interno del servidor al eliminar la entrada del libro.
+ */
 server.delete("/book/:id", async (req, res) => {
     const bookId = req.params.id;
 
     try {
         const connection = await getDBConnection();
 
-        // Eliminar el libro
         const deleteBookQuery = "DELETE FROM books WHERE book_id = ?";
         const [bookResult] = await connection.query(deleteBookQuery, [bookId]);
 
-        // Verificar si se eliminó alguna fila
         if (bookResult.affectedRows === 0) {
             return res.status(404).json({ error: "No se encontró ningún libro con el ID proporcionado." });
         }
 
-        // Eliminar el autor si no tiene otros libros asociados
         const deleteAuthorQuery = "DELETE FROM authors WHERE author_id NOT IN (SELECT fk_author_id FROM books)";
         await connection.query(deleteAuthorQuery);
 
         res.status(200).json({ success: true, message: "La entrada del libro fue eliminada exitosamente." });
+
     } catch (error) {
         console.error("Error al eliminar la entrada del libro:", error);
         res.status(500).json({ error: "Error interno del servidor al eliminar la entrada del libro." });
