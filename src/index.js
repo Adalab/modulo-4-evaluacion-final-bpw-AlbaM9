@@ -56,8 +56,10 @@ server.get("/library", async (req, res) => {
 
         //Devolvemos la respuesta
         res.status(200).json({
+
             status: "success",
             message: libraryResult,
+
         });
     } catch (error) {
         res.status(500).json({
@@ -112,36 +114,43 @@ server.get("/library", async (req, res) => {
  *         description: Error interno del servidor al procesar la solicitud.
  */
 server.post("/library", async (req, res) => {
-    const connection = await getDBConnection();
+    // Para que avise si falta algún campo
+    const requiredFields = ['author_name', 'author_country', 'author_photo', 'author_bio', 'book_title', 'book_image', 'book_synopsis', 'book_year'];
+    const missingFields = requiredFields.filter(field => !req.body[field]);
 
-    const authorQuerySql = "INSERT INTO authors (author_name, author_country, author_photo, author_bio) VALUES (?, ?, ?, ?)";
-    const [authorResult] = await connection.query(authorQuerySql, [
-        req.body.author_name,
-        req.body.author_country,
-        req.body.author_photo,
-        req.body.author_bio
-    ]);
+    if (missingFields.length > 0) {
+        return res.status(400).json({ error: `Faltan campos requeridos: ${missingFields.join(', ')}` });
+    }
+    try {
+        const connection = await getDBConnection();
 
-    const projectQuerySql = "INSERT INTO books (book_title, book_image, book_synopsis, book_year, fk_author_id) VALUES (?, ?, ?, ?, ?)";
-    const [bookResult] = await connection.query(projectQuerySql, [
-        req.body.book_title,
-        req.body.book_image,
-        req.body.book_synopsis,
-        req.body.book_year,
-        authorResult.insertId
-    ]);
+        const authorQuerySql = "INSERT INTO authors (author_name, author_country, author_photo, author_bio) VALUES (?, ?, ?, ?)";
+        const [authorResult] = await connection.query(authorQuerySql, [
+            req.body.author_name,
+            req.body.author_country,
+            req.body.author_photo,
+            req.body.author_bio
+        ]);
 
-    res.status(201).json({
-        success: true,
-        id: bookResult.insertId,
+        const projectQuerySql = "INSERT INTO books (book_title, book_image, book_synopsis, book_year, fk_author_id) VALUES (?, ?, ?, ?, ?)";
+        const [bookResult] = await connection.query(projectQuerySql, [
+            req.body.book_title,
+            req.body.book_image,
+            req.body.book_synopsis,
+            req.body.book_year,
+            authorResult.insertId
+        ]);
 
-        catch(error) {
-            console.error("Error al añadir el libro:", error);
-            res.status(500).json({ error: "Error interno del servidor." });
-        }
-    });
-
+        res.status(201).json({
+            success: true,
+            id: bookResult.insertId
+        });
+    } catch (error) {
+        console.error("Error al añadir el libro:", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
 });
+
 /**
  * @swagger
  * /book/{id}:
@@ -196,7 +205,7 @@ server.post("/library", async (req, res) => {
  */
 server.put("/book/:id", async (req, res) => {
     const bookId = req.params.id;
-    const { title, image, synopsis, year, author_name, author_country, author_photo, author_bio } = req.body;
+    const { book_title, book_image, book_synopsis, book_year, author_name, author_country, author_photo, author_bio } = req.body;
 
     try {
         const connection = await getDBConnection();
@@ -205,21 +214,21 @@ server.put("/book/:id", async (req, res) => {
         let valuesBook = [];
         let valuesAuthor = [];
 
-        if (title) {
+        if (book_title) {
             updateFieldsBook.push("book_title = ?");
-            valuesBook.push(title);
+            valuesBook.push(book_title);
         }
-        if (image) {
+        if (book_image) {
             updateFieldsBook.push("book_image = ?");
-            valuesBook.push(image);
+            valuesBook.push(book_image);
         }
-        if (synopsis) {
+        if (book_synopsis) {
             updateFieldsBook.push("book_synopsis = ?");
-            valuesBook.push(synopsis);
+            valuesBook.push(book_synopsis);
         }
-        if (year) {
+        if (book_year) {
             updateFieldsBook.push("book_year = ?");
-            valuesBook.push(year);
+            valuesBook.push(book_year);
         }
 
         if (author_name) {
@@ -261,6 +270,8 @@ server.put("/book/:id", async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor al actualizar los campos del libro y del autor." });
     }
 });
+
+
 /**
  * @swagger
  * /book/{id}:
