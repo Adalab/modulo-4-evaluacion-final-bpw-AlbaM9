@@ -2,20 +2,22 @@ create Database FantasyBooks;
 use FantasyBooks;
 CREATE TABLE authors (
     author_id INT AUTO_INCREMENT PRIMARY KEY,
-    author_name VARCHAR(100),
-    author_country VARCHAR(100),
-    author_photo LONGTEXT,
-    author_bio TEXT
+    author_name VARCHAR(100) NOT NULL,
+    author_country VARCHAR(100) NOT NULL,
+    author_photo LONGTEXT NOT NULL,
+    author_bio TEXT NOT NULL
 );
+
 CREATE TABLE books (
     book_id INT AUTO_INCREMENT PRIMARY KEY,
-    book_title VARCHAR(255),
-    book_image LONGTEXT,
-    book_synopsis TEXT,
+    book_title VARCHAR(255) NOT NULL,
+    book_image LONGTEXT NOT NULL,
+    book_synopsis TEXT NOT NULL,
     book_year YEAR,
-	fk_author_id INT,
+    fk_author_id INT NOT NULL,
     FOREIGN KEY (fk_author_id) REFERENCES authors(author_id)
 );
+
 
 INSERT INTO authors (author_name, author_country, author_photo, author_bio) VALUES
 ('Patrick Rothfuss', 'Estados Unidos', 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQyFZ5HeQJaoZ8bdN4kfcrJGryBv368Y0S8p4t6VbYFGz38vLm1', 'Patrick James Rothfuss (Madison, 6 de junio de 1973) es un escritor estadounidense de fantasía y profesor adjunto de literatura y filología inglesa de la Universidad de Wisconsin. Es el autor de la serie Crónica del asesino de reyes, que fue rechazada por varias editoriales antes de que el primer libro de la serie El nombre del viento fuese publicado en el año 2007. Obtuvo muy buenas críticas y se convirtió en un éxito de ventas.'),

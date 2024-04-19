@@ -134,7 +134,13 @@ server.post("/library", async (req, res) => {
     res.status(201).json({
         success: true,
         id: bookResult.insertId,
+
+        catch(error) {
+            console.error("Error al añadir el libro:", error);
+            res.status(500).json({ error: "Error interno del servidor." });
+        }
     });
+
 });
 /**
  * @swagger
