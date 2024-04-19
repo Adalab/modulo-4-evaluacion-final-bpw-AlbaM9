@@ -4,11 +4,12 @@ import '../scss/App.scss';
 function App() {
   const [libraryData, setLibraryData] = useState([]);
   const [error, setError] = useState(null);
+  const SERVER_URL = process.env.URL || 'http://localhost:4001'
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('http://localhost:4001/library');
+        const response = await fetch(`${SERVER_URL}/library`);
         if (!response.ok) {
           throw new Error('Error al obtener los datos de la biblioteca');
         }
@@ -31,8 +32,6 @@ function App() {
     <div >
       <header>
         <h2>Librería</h2>
-        <button>Añade tus libros favoritos!</button>
-
       </header>
 
       <ul>

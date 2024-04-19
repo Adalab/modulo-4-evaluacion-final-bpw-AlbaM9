@@ -12,14 +12,12 @@ server.use(express.json({ limit: "25mb" }));
 
 async function getDBConnection() {
     const connection = await mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "AlbaM9",
-        database: "fantasybooks",
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
     });
 
-
-    connection.connect();
     return connection;
 }
 
