@@ -140,7 +140,7 @@ server.post("/library", async (req, res) => {
             req.body.book_year,
             authorResult.insertId
         ]);
-
+        connection.end();
         res.status(201).json({
             success: true,
             id: bookResult.insertId
@@ -263,7 +263,7 @@ server.put("/book/:id", async (req, res) => {
             valuesAuthor.push(bookId);
             await connection.query(updateAuthorQuery, valuesAuthor);
         }
-
+        connection.end();
         res.status(200).json({ success: true, message: "Los campos del libro y del autor fueron actualizados exitosamente." });
     } catch (error) {
         console.error("Error al actualizar los campos del libro y del autor:", error);
@@ -308,7 +308,7 @@ server.delete("/book/:id", async (req, res) => {
 
         const deleteAuthorQuery = "DELETE FROM authors WHERE author_id NOT IN (SELECT fk_author_id FROM books)";
         await connection.query(deleteAuthorQuery);
-
+        connection.end();
         res.status(200).json({ success: true, message: "La entrada del libro fue eliminada exitosamente." });
 
     } catch (error) {
